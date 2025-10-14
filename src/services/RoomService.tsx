@@ -1,5 +1,6 @@
 import { authService } from './AuthService'
-import { projectId, publicAnonKey } from '../utils/supabase/info'
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 interface Room {
   id: string
@@ -46,7 +47,7 @@ class RoomService {
         return { error: 'Not authenticated' }
       }
 
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-b2516160/rooms/create`, {
+      const response = await fetch(`${API_URL}/api/rooms/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -70,9 +71,9 @@ class RoomService {
 
   async getActiveRooms(): Promise<{ rooms?: ActiveRoom[]; error?: string }> {
     try {
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-b2516160/rooms/active`, {
+      const response = await fetch(`${API_URL}/api/rooms/active`, {
         headers: {
-          'Authorization': `Bearer ${publicAnonKey}`
+          'Authorization': `Bearer ${authService.getAccessToken()}`
         }
       })
 
@@ -91,9 +92,9 @@ class RoomService {
 
   async getRoom(roomId: string): Promise<{ room?: Room; error?: string }> {
     try {
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-b2516160/rooms/${roomId}`, {
+      const response = await fetch(`${API_URL}/api/rooms/${roomId}`, {
         headers: {
-          'Authorization': `Bearer ${publicAnonKey}`
+          'Authorization': `Bearer ${authService.getAccessToken()}`
         }
       })
 
@@ -117,7 +118,7 @@ class RoomService {
         return { error: 'Not authenticated' }
       }
 
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-b2516160/rooms/${roomId}/join`, {
+      const response = await fetch(`${API_URL}/api/rooms/${roomId}/join`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -145,7 +146,7 @@ class RoomService {
         return { error: 'Not authenticated' }
       }
 
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-b2516160/rooms/${roomId}/leave`, {
+      const response = await fetch(`${API_URL}/api/rooms/${roomId}/leave`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -173,7 +174,7 @@ class RoomService {
         return { error: 'Not authenticated' }
       }
 
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-b2516160/rooms/${roomId}/messages`, {
+      const response = await fetch(`${API_URL}/api/rooms/${roomId}/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -197,9 +198,9 @@ class RoomService {
 
   async getMessages(roomId: string): Promise<{ messages?: ChatMessage[]; error?: string }> {
     try {
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-b2516160/rooms/${roomId}/messages`, {
+      const response = await fetch(`${API_URL}/api/rooms/${roomId}/messages`, {
         headers: {
-          'Authorization': `Bearer ${publicAnonKey}`
+          'Authorization': `Bearer ${authService.getAccessToken()}`
         }
       })
 

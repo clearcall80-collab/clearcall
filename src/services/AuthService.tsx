@@ -1,4 +1,4 @@
-import { config } from '../utils/config'
+const API_URL = import.meta.env.VITE_API_URL;
 
 interface User {
   _id: string
@@ -38,7 +38,7 @@ class AuthService {
 
   async signup(email: string, password: string, name: string): Promise<AuthResponse> {
     try {
-      const response = await fetch(`${config.API_BASE_URL}/api/auth/signup`, {
+      const response = await fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ class AuthService {
 
   async signin(email: string, password: string): Promise<AuthResponse> {
     try {
-      const response = await fetch(`${config.API_BASE_URL}/api/auth/signin`, {
+      const response = await fetch(`${API_URL}/api/auth/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -119,7 +119,7 @@ class AuthService {
         const parsedUser = JSON.parse(storedUser)
 
         // Verify token is still valid by making a request
-        const response = await fetch(`${config.API_BASE_URL}/api/user/profile`, {
+        const response = await fetch(`${API_URL}/api/user/profile`, {
           headers: {
             'Authorization': `Bearer ${storedToken}`
           }
@@ -172,7 +172,7 @@ class AuthService {
         return { error: 'Not authenticated' }
       }
 
-      const response = await fetch(`${config.API_BASE_URL}/api/user/profile`, {
+      const response = await fetch(`${API_URL}/api/user/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -204,7 +204,7 @@ class AuthService {
         return { error: 'Not authenticated' }
       }
 
-      const response = await fetch(`${config.API_BASE_URL}/api/user/call-history`, {
+      const response = await fetch(`${API_URL}/api/user/call-history`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -230,7 +230,7 @@ class AuthService {
         return { error: 'Not authenticated' }
       }
 
-      const response = await fetch(`${config.API_BASE_URL}/api/user/call-history`, {
+      const response = await fetch(`${API_URL}/api/user/call-history`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

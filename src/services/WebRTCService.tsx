@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
-import { config } from '../utils/config';
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 interface PeerConnection {
   id: string;
@@ -44,7 +45,7 @@ class WebRTCService {
 
   private setupSocketConnection() {
     // Connect to the Socket.io server
-    this.socket = io(config.SOCKET_URL, {
+    this.socket = io(API_URL, {
       transports: ['websocket', 'polling'],
       timeout: 5000,
       reconnectionAttempts: 3,
@@ -62,12 +63,12 @@ class WebRTCService {
       this.onConnectionStateCallback?.('disconnected');
     });
 
-    this.socket.on('user-joined', async (data: { userId: string, roomId: string }) => {
-      await this.handleUserJoined(data.userId);
+    this.socket.on('user-joined', async ({ userId }: { userId: string }) => {
+      await this.handleUserJoined(userId);
     });
 
-    this.socket.on('user-left', (data: { userId: string }) => {
-      this.handleUserLeft(data.userId);
+    this.socket.on('user-left', ({ userId }: { userId: string }) => {
+      this.handleUserLeft(userId);
     });
 
     this.socket.on('offer', async (data: { offer: RTCSessionDescriptionInit, from: string }) => {
@@ -86,7 +87,7 @@ class WebRTCService {
       this.onChatMessageCallback?.(data);
     });
 
-    this.socket.on('media-toggle', (data: { userId: string, type: 'video' | 'audio', enabled: boolean }) => {
+    this.socket.on('media-toggle', (_data: { userId: string, type: 'video' | 'audio', enabled: boolean }) => {
       // Handle remote user media toggle
     });
 
