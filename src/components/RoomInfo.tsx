@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Copy, Check, Users, Clock, Share2, X } from 'lucide-react';
+import { useState } from 'react';
+import { Copy, Check, Users, Clock, Share2 } from 'lucide-react';
 import { Button } from './ui/button';
-import { Badge } from './ui/badge';
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface RoomInfoProps {
   roomId: string;

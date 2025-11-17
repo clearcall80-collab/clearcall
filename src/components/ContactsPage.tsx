@@ -1,8 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
-import { User, Plus, Search, Phone, Mail, Trash2, UserPlus, Video } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Plus, Search, Phone, Mail, Trash2, UserPlus, Video } from 'lucide-react';
 import { Button } from './ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
@@ -88,28 +88,9 @@ export function ContactsPage({ onStartCall, language }: ContactsPageProps) {
     try {
       const token = authService.getAccessToken();
       if (!token) {
-        setContacts([
-          {
-            _id: '1',
-            name: 'Alice Johnson',
-            email: 'alice@example.com',
-            phone: '+1 (555) 123-4567',
-            addedAt: new Date().toISOString()
-          },
-          {
-            _id: '2',
-            name: 'Bob Smith',
-            email: 'bob@example.com',
-            phone: '+1 (555) 987-6543',
-            addedAt: new Date().toISOString()
-          },
-          {
-            _id: '3',
-            name: 'Carol Davis',
-            email: 'carol@example.com',
-            addedAt: new Date().toISOString()
-          }
-        ]);
+        setError(t.errorFetching);
+        setContacts([]);
+        setLoading(false);
         return;
       }
 
@@ -121,6 +102,7 @@ export function ContactsPage({ onStartCall, language }: ContactsPageProps) {
 
       if (!response.ok) {
         setError(t.errorFetching);
+        setContacts([]);
         return;
       }
 
@@ -141,16 +123,7 @@ export function ContactsPage({ onStartCall, language }: ContactsPageProps) {
     try {
       const token = authService.getAccessToken();
       if (!token) {
-        const mockContact: Contact = {
-          _id: Date.now().toString(),
-          name: newContact.name,
-          email: newContact.email,
-          phone: newContact.phone,
-          addedAt: new Date().toISOString()
-        };
-        setContacts([...contacts, mockContact]);
-        setNewContact({ name: '', email: '', phone: '' });
-        setIsAddDialogOpen(false);
+        setError(t.errorAdding);
         return;
       }
 
@@ -182,7 +155,7 @@ export function ContactsPage({ onStartCall, language }: ContactsPageProps) {
     try {
       const token = authService.getAccessToken();
       if (!token) {
-        setContacts(contacts.filter(c => c._id !== contactId));
+        setError(t.errorDeleting);
         return;
       }
 

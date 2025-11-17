@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowLeft, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -11,7 +11,7 @@ import clearCallLogo from '../assets/cc.png';
 
 interface LoginPageProps {
   onBackToWelcome: () => void;
-  onLoginSuccess: (username: string) => void;
+  onLoginSuccess: (username?: string) => void;
   language: 'en' | 'te';
   onToggleLanguage: () => void;
 }
@@ -71,10 +71,9 @@ export function LoginPage({
 
   const t = translations[language];
 
-  // Clear any saved auth data on mount
+  // Clear all past data on mount for a fresh start
   useEffect(() => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userData');
+    localStorage.clear();
     sessionStorage.clear();
     setLoginData({ email: '', password: '' });
     setSignupData({ fullName: '', email: '', password: '', confirmPassword: '' });

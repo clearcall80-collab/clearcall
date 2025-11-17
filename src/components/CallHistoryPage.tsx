@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { History, Phone, Video, Clock, Users, Filter, Search, Calendar, Download } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Phone, Video, Clock, Search, Download, Calendar } from 'lucide-react';
 import { Button } from './ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent } from './ui/card';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Badge } from './ui/badge';
 import { authService } from '../services/AuthService';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { config } from '../utils/config';
 
 interface CallRecord {
   id: string;
@@ -98,130 +98,31 @@ export function CallHistoryPage({ language }: CallHistoryPageProps) {
   }, []);
 
   const fetchCallHistory = async () => {
+    setLoading(true);
     try {
       const accessToken = authService.getAccessToken();
-      console.log('Fetching call history with token:', accessToken ? 'Token exists' : 'No token');
-      
       if (!accessToken) {
-        console.log('No access token - using mock call history data');
-        // Use mock data when no token is available
-        setCallHistory([
-          {
-            id: '1',
-            type: 'outgoing',
-            participants: ['Alice Johnson'],
-            duration: 1920,
-            quality: 'good',
-            timestamp: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
-            features_used: ['Voice-to-Text', 'Chat']
-          },
-          {
-            id: '2',
-            type: 'incoming',
-            participants: ['Bob Smith', 'Carol Davis'],
-            duration: 2700,
-            quality: 'good',
-            timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-            features_used: ['Sign-to-Text', 'Recording']
-          },
-          {
-            id: '3',
-            type: 'missed',
-            participants: ['David Wilson'],
-            duration: 0,
-            quality: 'poor',
-            timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-            features_used: []
-          },
-          {
-            id: '4',
-            type: 'outgoing',
-            participants: ['Eva Martinez'],
-            duration: 1560,
-            quality: 'fair',
-            timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-            features_used: ['Chat']
-          },
-          {
-            id: '5',
-            type: 'incoming',
-            participants: ['Frank Brown', 'Grace Lee', 'Henry Taylor'],
-            duration: 3600,
-            quality: 'good',
-            timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-            features_used: ['Voice-to-Text', 'Sign-to-Text', 'Recording', 'Chat']
-          }
-        ]);
+        setCallHistory([]);
         setLoading(false);
         return;
       }
 
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-b2516160/user/call-history`, {
+      const response = await fetch(`${config.API_BASE_URL}/api/call-history`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }
       });
 
-      const data = await response.json();
-      
-      if (response.ok) {
-        setCallHistory(data.callHistory || []);
-      } else {
-        console.log('API unavailable - using mock call history data');
-        // Use mock data as fallback
-        setCallHistory([
-          {
-            id: '1',
-            type: 'outgoing',
-            participants: ['Alice Johnson'],
-            duration: 1920,
-            quality: 'good',
-            timestamp: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
-            features_used: ['Voice-to-Text']
-          },
-          {
-            id: '2',
-            type: 'incoming',
-            participants: ['Bob Smith'],
-            duration: 2700,
-            quality: 'good',
-            timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-            features_used: ['Sign-to-Text']
-          }
-        ]);
+      if (!response.ok) {
+        setCallHistory([]);
+        setLoading(false);
+        return;
       }
+
+      const data = await response.json();
+      setCallHistory(data.callHistory || []);
     } catch (error) {
-      console.log('Network unavailable - using mock call history data');
-      // Use mock data as fallback
-      setCallHistory([
-        {
-          id: '1',
-          type: 'outgoing',
-          participants: ['Alice Johnson'],
-          duration: 1920,
-          quality: 'good',
-          timestamp: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
-          features_used: ['Voice-to-Text', 'Chat']
-        },
-        {
-          id: '2',
-          type: 'incoming',
-          participants: ['Bob Smith', 'Carol Davis'],
-          duration: 2700,
-          quality: 'good',
-          timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-          features_used: ['Sign-to-Text']
-        },
-        {
-          id: '3',
-          type: 'missed',
-          participants: ['David Wilson'],
-          duration: 0,
-          quality: 'poor',
-          timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-          features_used: []
-        }
-      ]);
+      setCallHistory([]);
     } finally {
       setLoading(false);
     }
@@ -358,7 +259,7 @@ export function CallHistoryPage({ language }: CallHistoryPageProps) {
       {filteredHistory.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <History className="h-12 w-12 text-gray-400 mb-4" />
+            <Phone className="h-12 w-12 text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
               {t.noHistory}
             </h3>

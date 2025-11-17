@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Users, Calendar, Clock, TrendingUp, Video, Phone } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { authService } from '../services/AuthService';
+import { useState, useEffect } from 'react';
+import { Users, Calendar, Clock, TrendingUp, Phone } from 'lucide-react';
+import { Card, CardContent } from './ui/card';
+
 
 interface DashboardStatsProps {
   language: 'en' | 'te';

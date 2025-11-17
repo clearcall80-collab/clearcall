@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { RoomPage } from './RoomPage';
 
 export function RoomPageTest() {

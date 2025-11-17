@@ -1,4 +1,4 @@
-import { authService } from './AuthService'
+import { authService } from './AuthService';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -167,38 +167,9 @@ class RoomService {
     }
   }
 
-  async sendMessage(roomId: string, message: string): Promise<{ message?: ChatMessage; error?: string }> {
-    try {
-      const accessToken = authService.getAccessToken()
-      if (!accessToken) {
-        return { error: 'Not authenticated' }
-      }
-
-      const response = await fetch(`${API_URL}/api/rooms/${roomId}/messages`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
-        },
-        body: JSON.stringify({ message })
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        return { error: data.error || 'Failed to send message' }
-      }
-
-      return { message: data.message }
-    } catch (error) {
-      console.error('Send message error:', error)
-      return { error: 'Network error while sending message' }
-    }
-  }
-
   async getMessages(roomId: string): Promise<{ messages?: ChatMessage[]; error?: string }> {
     try {
-      const response = await fetch(`${API_URL}/api/rooms/${roomId}/messages`, {
+      const response = await fetch(`${API_URL}/api/messages/${roomId}`, {
         headers: {
           'Authorization': `Bearer ${authService.getAccessToken()}`
         }

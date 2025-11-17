@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Video, Copy, Check, Loader2, Users, Clock } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Card, CardContent } from './ui/card';
 import { Badge } from './ui/badge';
 import { roomService } from '../services/RoomService';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface JoinRoomDialogProps {
   open: boolean;

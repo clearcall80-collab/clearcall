@@ -51,14 +51,14 @@ export const VideoGrid: React.FC<VideoGridProps> = ({
   };
 
   return (
-    <div className={`grid gap-2 h-full ${getGridLayout(participants.length)}`}>
+    <div className={`grid gap-4 h-full p-2 ${getGridLayout(participants.length)}`}>
       {participants.map((participant, index) => (
         <motion.div
           key={participant.id}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: index * 0.1 }}
-          className="relative bg-gray-800 rounded-lg overflow-hidden group"
+          className="relative bg-gray-800 rounded-xl overflow-hidden group shadow-lg border border-gray-700"
         >
           {/* Video Feed */}
           <div className="w-full h-full bg-gray-900 flex items-center justify-center relative">
