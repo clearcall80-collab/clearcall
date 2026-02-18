@@ -12,6 +12,7 @@ const userRoutes = require('./routes/user');
 const contactRoutes = require('./routes/contacts');
 const callHistoryRoutes = require('./routes/callHistory');
 const messageRoutes = require('./routes/messages');
+const welcomeRoutes = require('./routes/welcome');
 
 // Import socket handlers
 const socketHandlers = require('./socket/socketHandlers');
@@ -51,6 +52,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/contacts', contactRoutes);
 app.use('/api/call-history', callHistoryRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api', welcomeRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

@@ -403,7 +403,7 @@ export function HomePage({
           )}
 
           {currentView === 'calendar' && (
-            <CalendarPage onStartCall={onStartCall} language={language} />
+            <CalendarPage onJoinMeeting={onStartCall} language={language} />
           )}
 
           {currentView === 'contacts' && (

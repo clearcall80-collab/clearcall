@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
@@ -9,15 +9,10 @@ import {
   AlertCircle, 
   XCircle, 
   Mic, 
-  MicOff, 
-  Video, 
-  VideoOff,
+  Video,
   Volume2,
   Hand,
-  MessageSquare,
-  Share2,
-  Info,
-  Shield
+  Info
 } from 'lucide-react';
 import { webRTCService } from '../services/WebRTCService';
 import { voiceToTextService } from '../services/VoiceToTextService';
@@ -28,7 +23,6 @@ export function WebRTCTestPage() {
   const [socketConnected, setSocketConnected] = useState(false);
   const [roomJoined, setRoomJoined] = useState(false);
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
-  const [connectionState, setConnectionState] = useState('disconnected');
   const [connectedPeers, setConnectedPeers] = useState<string[]>([]);
   
   // Permission states
@@ -75,7 +69,7 @@ export function WebRTCTestPage() {
     console.log('🔍 Checking browser support...');
     
     // Check WebRTC support
-    if (typeof RTCPeerConnection !== 'undefined' && navigator.mediaDevices?.getUserMedia) {
+    if (typeof RTCPeerConnection !== 'undefined' && !!navigator.mediaDevices?.getUserMedia) {
       console.log('✅ WebRTC supported');
       setTestResults(prev => ({ ...prev, webrtc: 'success' }));
     } else {
@@ -84,7 +78,7 @@ export function WebRTCTestPage() {
     }
     
     // Check camera support for sign detection
-    if (navigator.mediaDevices?.getUserMedia) {
+    if (!!navigator.mediaDevices?.getUserMedia) {
       setSignSupported(true);
       setTestResults(prev => ({ ...prev, sign: 'success' }));
     } else {
@@ -109,9 +103,8 @@ export function WebRTCTestPage() {
     
     webRTCService.onConnectionState((state) => {
       console.log('Socket state:', state);
-      setConnectionState(state);
       setSocketConnected(state === 'connected');
-      
+
       if (state === 'connected') {
         setTestResults(prev => ({ ...prev, socket: 'success' }));
       } else if (state === 'disconnected') {
@@ -179,9 +172,9 @@ export function WebRTCTestPage() {
     }
   };
 
-  const requestPermissions = () => {
-    setShowPermissionManager(true);
-  };
+  // const requestPermissions = () => {
+  //   setShowPermissionManager(true);
+  // };
 
   const joinTestRoom = async () => {
     if (!permissionsGranted) {
@@ -210,9 +203,9 @@ export function WebRTCTestPage() {
         setLocalStream(stream);
       });
 
-      webRTCService.onRemoteStream((userId, stream) => {
-        console.log('Remote stream received from:', userId);
-      });
+      // webRTCService.onRemoteStream((userId, stream) => {
+      //   console.log('Remote stream received from:', userId);
+      // });
       
       const success = await webRTCService.joinRoom(roomId, userId);
       if (success) {
@@ -575,7 +568,7 @@ export function WebRTCTestPage() {
               <div>
                 <strong>getUserMedia Support:</strong>
                 <br />
-                {navigator.mediaDevices?.getUserMedia ? '✅ Available' : '❌ Not available'}
+                {!!navigator.mediaDevices?.getUserMedia ? '✅ Available' : '❌ Not available'}
               </div>
               <div>
                 <strong>Speech Recognition:</strong>

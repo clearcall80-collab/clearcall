@@ -1,8 +1,7 @@
 import React from 'react';
 import { Video, Calendar, UserPlus, Phone, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Avatar, AvatarFallback } from './ui/avatar';
-import { Badge } from './ui/badge';
+
 import { Button } from './ui/button';
 
 interface RecentActivityProps {
@@ -158,12 +157,12 @@ export function RecentActivity({ language, onStartCall, onViewContacts, onViewHi
                     size="sm" 
                     variant="ghost" 
                     className="h-6 px-2 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={(e) => {
+                    onClick={(e: React.MouseEvent) => {
                       e.stopPropagation();
                       onStartCall?.();
                     }}
                   >
-                    {t.callBack}
+                    Call Back
                   </Button>
                 )}
               </div>

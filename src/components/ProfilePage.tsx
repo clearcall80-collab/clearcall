@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { User, Mail, Phone, Edit, Save, X, Camera, Shield, Bell, Palette, Globe } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { User, Edit, Save, X, Camera, Shield, Bell, Palette } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
@@ -225,7 +225,7 @@ export function ProfilePage({
                 {profile?.name}
               </h3>
               <p className="text-gray-500 dark:text-gray-400">
-                Member since {profile?.created_at ? new Date(profile.created_at).toLocaleDateString() : 'Unknown'}
+                Member since {profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : 'Unknown'}
               </p>
             </div>
           </div>
@@ -320,7 +320,7 @@ export function ProfilePage({
               </div>
               <Select
                 value={language}
-                onValueChange={(value) => {
+                onValueChange={(value: string) => {
                   if (value !== language) {
                     onToggleLanguage();
                   }
@@ -358,7 +358,7 @@ export function ProfilePage({
             <Switch
               id="call-invites"
               checked={notifications.callInvites}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked: boolean) =>
                 setNotifications({ ...notifications, callInvites: checked })
               }
             />
@@ -373,7 +373,7 @@ export function ProfilePage({
             <Switch
               id="meeting-reminders"
               checked={notifications.meetingReminders}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked: boolean) =>
                 setNotifications({ ...notifications, meetingReminders: checked })
               }
             />
@@ -388,7 +388,7 @@ export function ProfilePage({
             <Switch
               id="chat-messages"
               checked={notifications.chatMessages}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked: boolean) =>
                 setNotifications({ ...notifications, chatMessages: checked })
               }
             />
@@ -403,7 +403,7 @@ export function ProfilePage({
             <Switch
               id="app-updates"
               checked={notifications.appUpdates}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked: boolean) =>
                 setNotifications({ ...notifications, appUpdates: checked })
               }
             />

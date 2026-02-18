@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { WelcomePage } from './components/WelcomePage';
 import { LoginPage } from './components/LoginPage';
 import { HomePage } from './components/HomePage';
@@ -165,11 +165,7 @@ export default function App() {
           <LoginPage
             onBackToWelcome={navigateToWelcome}
             onLoginSuccess={navigateToHome}
-            isDarkMode={isDarkMode}
-            isLargeText={isLargeText}
             language={language}
-            onToggleDarkMode={toggleDarkMode}
-            onToggleLargeText={toggleLargeText}
             onToggleLanguage={toggleLanguage}
           />
         ) : currentPage === 'home' ? (

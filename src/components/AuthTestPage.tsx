@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
@@ -58,7 +58,7 @@ export function AuthTestPage() {
       const data = await response.json();
       return { success: response.ok, data, status: response.status };
     } catch (error) {
-      return { success: false, error: error.message };
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
     }
   };
 
@@ -276,7 +276,7 @@ export function AuthTestPage() {
 
     } catch (error) {
       console.error('Test error:', error);
-      updateResult('Test Suite', 'error', `Test suite failed: ${error.message}`);
+      updateResult('Test Suite', 'error', `Test suite failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsRunning(false);
     }
@@ -288,7 +288,7 @@ export function AuthTestPage() {
       setTestResults([]);
       updateResult('Clear Test Data', 'success', 'Test data cleared, signed out');
     } catch (error) {
-      updateResult('Clear Test Data', 'error', `Clear failed: ${error.message}`);
+      updateResult('Clear Test Data', 'error', `Clear failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 

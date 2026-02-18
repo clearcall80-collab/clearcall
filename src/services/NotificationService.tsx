@@ -42,17 +42,17 @@ class NotificationService {
     }
   }
 
-  showIncomingCallNotification(callerName: string, onAccept?: () => void, onDecline?: () => void) {
-    this.showNotification('Incoming Call', {
-      body: `${callerName} is calling you...`,
-      tag: 'incoming-call',
-      requireInteraction: true,
-      actions: [
-        { action: 'accept', title: 'Accept' },
-        { action: 'decline', title: 'Decline' }
-      ]
-    });
-  }
+  // showIncomingCallNotification(callerName: string, onAccept?: () => void, onDecline?: () => void) {
+  //   this.showNotification('Incoming Call', {
+  //     body: `${callerName} is calling you...`,
+  //     tag: 'incoming-call',
+  //     requireInteraction: true,
+  //     actions: [
+  //       { action: 'accept', title: 'Accept' },
+  //       { action: 'decline', title: 'Decline' }
+  //     ]
+  //   });
+  // }
 
   showMeetingReminder(meetingTitle: string, startsIn: string) {
     this.showNotification('Meeting Reminder', {

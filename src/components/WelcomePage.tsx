@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { ArrowRight, Eye, Type } from 'lucide-react';
 import { Button } from './ui/button';
 import { TeluguPattern } from './TeluguPattern';
@@ -16,8 +16,8 @@ interface WelcomePageProps {
 
 export function WelcomePage({
   onGetStarted,
-  isDarkMode,
-  isLargeText,
+  // isDarkMode,
+  // isLargeText,
   language,
   onToggleDarkMode,
   onToggleLargeText,

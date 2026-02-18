@@ -4,7 +4,6 @@ import { Button } from './ui/button';
 import { TooltipProvider } from './ui/tooltip';
 import { motion, AnimatePresence } from 'motion/react';
 import { webRTCService } from '../services/WebRTCService';
-/* Removed unused import voiceToTextService */
 import { signToTextService, SignToTextService } from '../services/SignToTextService';
 import { PermissionManager } from './PermissionManager';
 import { RoomInfo } from './RoomInfo';
@@ -773,77 +772,79 @@ export function RoomPage({
           }}
         />
 
-        {/* Main Content Area */}
-        <div className="flex-1 flex relative">
-          {/* Video Grid Area */}
-          <div className="flex-1 relative p-4">
-            {/* Video Grid */}
-        <VideoGrid
-          participants={participants}
-          localUserId={localUserId}
-          localVideoRef={localVideoRef}
-          remoteVideoRefs={remoteVideoRefs}
-          remoteStreams={remoteStreams}
-          isLargeText={isLargeText}
-          style={videoGridContainerStyle}
-        />
+          {/* Main Content Area */}
+          <div className="flex-1 flex">
+            {/* Video Grid Area - Takes available space */}
+            <div className="flex-1 relative p-4">
+              {/* Video Grid */}
+              <VideoGrid
+                participants={participants}
+                localUserId={localUserId}
+                localVideoRef={localVideoRef}
+                remoteVideoRefs={remoteVideoRefs}
+                remoteStreams={remoteStreams}
+                isLargeText={isLargeText}
+                style={videoGridContainerStyle}
+              />
 
-        {/* Canvas overlay for pose and face mesh */}
-        <canvas
-          ref={overlayCanvasRef}
-          className="absolute top-0 left-0 pointer-events-none"
-          style={{ width: '100%', height: '100%', zIndex: 10 }}
-        />
+              {/* Canvas overlay for pose and face mesh */}
+              <canvas
+                ref={overlayCanvasRef}
+                className="absolute top-0 left-0 pointer-events-none"
+                style={{ width: '100%', height: '100%', zIndex: 10 }}
+              />
 
-        {/* Live Captions Overlay */}
-        <AnimatePresence>
-          {(isVoiceToTextOn && liveCaption) && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="absolute bottom-20 left-1/2 transform -translate-x-1/2 max-w-2xl"
-            >
-              <div className="bg-black/80 backdrop-blur-sm rounded-lg px-4 py-2 border border-gray-600">
-                <div className="text-xs text-gray-400 mb-1">{t.liveCaptions}</div>
-                <div className="text-white">{liveCaption}</div>
+              {/* Live Captions Overlay */}
+              <AnimatePresence>
+                {(isVoiceToTextOn && liveCaption) && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    className="absolute bottom-20 left-1/2 transform -translate-x-1/2 max-w-2xl"
+                  >
+                    <div className="bg-black/80 backdrop-blur-sm rounded-lg px-4 py-2 border border-gray-600">
+                      <div className="text-xs text-gray-400 mb-1">{t.liveCaptions}</div>
+                      <div className="text-white">{liveCaption}</div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Sign-to-Text Overlay */}
+              <AnimatePresence>
+                {(isSignToTextOn && signToTextCaption) && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="absolute top-20 left-1/2 transform -translate-x-1/2"
+                  >
+                    <div className="bg-purple-900/90 backdrop-blur-sm rounded-lg px-4 py-2 border border-purple-600">
+                      <div className="text-xs text-purple-300 mb-1">{t.signLanguage}</div>
+                      <div className="text-white font-medium">{signToTextCaption}</div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Sidebar - Fixed width when open */}
+            {isSidebarOpen && (
+              <div className="w-80">
+                <Sidebar
+                  activeTab={activeTab}
+                  setActiveTab={setActiveTab}
+                  chatMessages={chatMessages}
+                  participants={participants}
+                  currentUser={currentUser}
+                  chatMessage={chatMessage}
+                  setChatMessage={setChatMessage}
+                  sendMessage={sendMessage}
+                  onClose={() => setIsSidebarOpen(false)}
+                />
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-            {/* Sign-to-Text Overlay */}
-            <AnimatePresence>
-              {(isSignToTextOn && signToTextCaption) && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  className="absolute top-20 left-1/2 transform -translate-x-1/2"
-                >
-                  <div className="bg-purple-900/90 backdrop-blur-sm rounded-lg px-4 py-2 border border-purple-600">
-                    <div className="text-xs text-purple-300 mb-1">{t.signLanguage}</div>
-                    <div className="text-white font-medium">{signToTextCaption}</div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Sidebar */}
-          {isSidebarOpen && (
-            <Sidebar
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-              chatMessages={chatMessages}
-              participants={participants}
-              currentUser={currentUser}
-              chatMessage={chatMessage}
-              setChatMessage={setChatMessage}
-              sendMessage={sendMessage}
-              onClose={() => setIsSidebarOpen(false)}
-            />
-          )}
+            )}
 
           {/* Sidebar Toggle Button */}
           {!isSidebarOpen && (
